@@ -2,7 +2,7 @@ const api = function() {
     return new Promise((res, rej) => {
         setTimeout(() => {
            // randomize the res/rej
-           if(Math.round(Math.random()*100) > 50) {
+           if(Math.round(Math.random()*100) > 80) {
                console.log("Succeeding ...")
                 res({
                     message: "All ok!",
@@ -33,11 +33,9 @@ const makeRetry = (max) => {
             cb().catch(_ => {
                 makeRetry(max)(cb)
             })
-        } else {
-            
         }
     }
 }
 
-const with3TimesRetry = check(3)
+const with3TimesRetry = makeRetry(3)
 with3TimesRetry(api)
