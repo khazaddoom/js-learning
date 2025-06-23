@@ -1,8 +1,12 @@
+let successCount = 0
+
 const api = function() {
     return new Promise((res, rej) => {
         setTimeout(() => {
            // randomize the res/rej
-           if(Math.round(Math.random()*100) > 80) {
+           const probabilityOfSuccess = Math.round(Math.random()*100)
+        //    console.log(probabilityOfSuccess)
+           if( probabilityOfSuccess > 50) {
                console.log("Succeeding ...")
                 res({
                     message: "All ok!",
@@ -27,15 +31,18 @@ const api = function() {
 // })
 
 const makeRetry = (max) => {
-    let retryCount = 1
+    let retryCount = 0
     return (cb) => {
-        if(retryCount++ < max) {
+        if(retryCount < max) {
             cb().catch(_ => {
-                makeRetry(max)(cb)
+                retryCount++
+                makeRetry(max-retryCount)(cb)
             })
+        } else {
+            console.log("Stopping ...")
         }
     }
 }
 
-const with3TimesRetry = makeRetry(3)
+const with3TimesRetry = makeRetry(5)
 with3TimesRetry(api)
