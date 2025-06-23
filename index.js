@@ -44,5 +44,5 @@ const makeRetry = (max) => {
     }
 }
 
-const with3TimesRetry = makeRetry(5)
-with3TimesRetry(api)
+const with5TimesRetry = makeRetry(5)
+with5TimesRetry(api)
